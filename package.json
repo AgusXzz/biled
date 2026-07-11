@@ -22,6 +22,8 @@
   ],
   "scripts": {
     "format": "prettier --write \"lib/**/*.js\"",
+    "gen:protobuf": "sh WAProto/GenerateStatics.sh",
+    "gen:proto-extract": "node proto-extract/index.js",
     "lint": "eslint lib",
     "lint:fix": "eslint lib --fix",
     "preinstall": "node ./engine-requirements.js"
