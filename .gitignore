@@ -3,6 +3,7 @@
 .yarn/
 *.tgz
 */.DS_Store
+*.bak
 auth_info*.json
 baileys_auth_info*
 baileys_store*.json
