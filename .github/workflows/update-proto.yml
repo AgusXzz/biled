@@ -41,10 +41,7 @@ jobs:
         run: sh WAProto/GenerateStatics.sh
 
       - name: Update version in lib/Defaults/index.js
-        run: |
-          WA_VERSION="${{ steps.wa_proto_info.outputs.wa_version }}"
-          WA_ARRAY=$(echo $WA_VERSION | sed 's/\./, /g')
-          sed -i "s/const version = \[.*\]/const version = [$WA_ARRAY]/" lib/Defaults/index.js
+        run: node scripts/update-version.js
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5

@@ -26,7 +26,8 @@
     "gen:proto-extract": "node proto-extract/index.js",
     "lint": "eslint lib",
     "lint:fix": "eslint lib --fix",
-    "preinstall": "node ./engine-requirements.js"
+    "preinstall": "node ./engine-requirements.js",
+    "update:version": "node scripts/update-version.js"
   },
   "dependencies": {
     "@cacheable/node-cache": "^1.4.0",
