@@ -1,13 +1,11 @@
 import { defineConfig, globalIgnores } from "eslint/config"
 import js from "@eslint/js"
-import tseslint from "@typescript-eslint/eslint-plugin"
 
 export default defineConfig([
 	globalIgnores(["node_modules", "WAProto", "proto-extract", "auth_info"]),
 	{
 		plugins: {
 			js,
-			"@typescript-eslint": tseslint,
 		},
 		languageOptions: {
 			ecmaVersion: 2022,
