@@ -1,7 +1,7 @@
 syntax = "proto3";
 package proto;
 
-/// WhatsApp Version: 2.3000.1042991638
+/// WhatsApp Version: 2.3000.1043683339
 
 message ADVDeviceIdentity {
     optional uint32 rawId = 1;
@@ -450,6 +450,9 @@ message BotCapabilityMetadata {
         AI_RICH_RESPONSE_MAPS_V2_ENABLED = 64;
         AI_SUBSCRIPTION_METERING_ENABLED = 65;
         RICH_RESPONSE_SPORTS_WIDGET_ENABLED = 66;
+        AI_RICH_RESPONSE_ARTIFACTS_ENABLED = 67;
+        AI_RICH_RESPONSE_EMAIL_CALENDAR_ENABLED = 68;
+        AI_RICH_RESPONSE_REMINDERS_ENABLED = 69;
     }
 }
 
@@ -751,6 +754,7 @@ enum BotMetricsEntryPoint {
     GROUP_MEMBER = 54;
     CHATLIST_SEARCH = 55;
     NEW_CHAT_LIST = 56;
+    CONTACTS_TAB = 57;
 }
 message BotMetricsMetadata {
     optional string destinationId = 1;
@@ -1339,6 +1343,7 @@ message ClientPayload {
             SMART_GLASSES = 35;
             BLUE_VR = 36;
             AR_WRIST = 37;
+            WAIL = 38;
         }
         enum ReleaseChannel {
             RELEASE = 0;
@@ -2657,6 +2662,7 @@ message Message {
         optional string deeplinkPayload = 9;
         optional MessageContextInfo messageContextInfo = 10;
         optional uint32 callEntryPoint = 11;
+        optional string callReason = 12;
     }
     
     message CallLogMessage {
@@ -3735,6 +3741,7 @@ message Message {
         GALAXY_FLOW_ACTION = 11;
         BUSINESS_BROADCAST_INSIGHTS_DELIVERED_TO = 12;
         BUSINESS_BROADCAST_INSIGHTS_REFRESH = 13;
+        CONTACT_REFRESH_REQUEST = 14;
     }
     message PinInChatMessage {
         optional MessageKey key = 1;
@@ -3882,6 +3889,7 @@ message Message {
         optional AIMetadataOperation aiMetadataOperation = 31;
         optional Message.MarkAsVerifiedAction markAsVerifiedAction = 32;
         optional CoexStateSync coexStateSync = 33;
+        optional Message.SyncRequestMutationRetry syncRequestMutationRetry = 34;
         enum Type {
             REVOKE = 0;
             EPHEMERAL_SETTING = 3;
@@ -3915,6 +3923,7 @@ message Message {
             AI_METADATA_OPERATION = 35;
             MARK_AS_VERIFIED_ACTION = 36;
             COEX_STATE_SYNC = 37;
+            SYNC_REQUEST_MUTATION_RETRY = 38;
         }
     }
     
@@ -4141,6 +4150,16 @@ message Message {
         repeated string filehash = 1;
         optional string rmrSource = 2;
         optional int64 requestTimestamp = 3;
+    }
+    
+    message SyncRequestMutationRetry {
+        repeated Collection collections = 1;
+        optional uint32 count = 2;
+        message Collection {
+            optional string name = 1;
+            optional uint64 storedSyncdVersion = 2;
+        }
+        
     }
     
     message TemplateButtonReplyMessage {
@@ -4523,6 +4542,7 @@ enum MutationProps {
     COEX_V2_VERSION_ACTION = 88;
     WASA_ROOT_SECRET_ACTION = 89;
     BUBBLE_LOCK_MESSAGE_ACTION = 90;
+    LABEL_SUBLIST_ACTION = 91;
     SHARE_OWN_PN = 10001;
     BUSINESS_BROADCAST_ACTION = 10002;
     AI_THREAD_DELETE_ACTION = 10003;
@@ -5197,6 +5217,7 @@ message SyncActionValue {
     optional CoexV2VersionAction coexV2VersionAction = 88;
     optional WASARootSecretAction wasaRootSecretAction = 89;
     optional BubbleLockMessageAction bubbleLockMessageAction = 90;
+    optional LabelSublistAction labelSublistAction = 91;
     message AgentAction {
         optional string name = 1;
         optional int32 deviceId = 2;
@@ -5434,11 +5455,16 @@ message SyncActionValue {
             LOCKED = 13;
             INVITES = 14;
             THIRD_PARTY = 15;
+            LEAD = 16;
         }
     }
     
     message LabelReorderingAction {
         repeated int32 sortedLabelIds = 1;
+    }
+    
+    message LabelSublistAction {
+        optional int32 subListId = 1;
     }
     
     message LidContactAction {
@@ -5836,6 +5862,11 @@ message SyncActionValue {
             optional string id = 1;
             optional bytes rootSecret = 2;
             optional int64 epoch = 3;
+            optional Status status = 4;
+            enum Status {
+                INACTIVE = 0;
+                ACTIVE = 1;
+            }
         }
         
     }
